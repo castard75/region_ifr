@@ -16,31 +16,11 @@ function Home() {
 
   const load = useContext(ContextData);
 
-  console.log(load);
-
   //Context
   const { loading, setLoading } = useContext(ContextData);
 
-  console.log(loading);
   useEffect(() => {
-    const data = {
-      method: "post",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    };
-
-    axios
-      .post("https://localhost:8000/api/login", {
-        username: "departement@reunion.re",
-        password: "departement",
-      })
-      .then(function (response) {
-        setLoaded(true);
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
+    setLoaded(true);
   }, []);
 
   if (loaded) {

@@ -7,8 +7,8 @@ import { useNavigate } from "react-router-dom";
 import { ContextData } from "../App";
 
 function Login() {
-  const [usernames, setUsername] = useState("");
-  const [passwords, setPassword] = useState("");
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
 
   //UseNavigate
   const navigate = useNavigate();
@@ -22,9 +22,9 @@ function Login() {
     const useIdentifiant = "departement@reunion.re";
     const userPassword = "departement";
     axios
-      .post("https://localhost:8000/api/login", {
-        username: usernames,
-        password: passwords,
+      .post(" https://127.0.0.1:8000/api/login", {
+        username: username,
+        password: password,
       })
       .then(function (response) {
         setLoading(true);
