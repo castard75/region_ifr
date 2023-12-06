@@ -5,6 +5,8 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 function Stock({ stocks }) {
   const [loading, setLoading] = useState(false);
+  const tab = [];
+  tab.push(stocks);
 
   const navigate = useNavigate();
   const stockDetails = (e) => {
@@ -29,15 +31,16 @@ function Stock({ stocks }) {
               </tr>
             </thead>
             <tbody>
-              {stocks.map((product) => {
+              {tab[0].map((product) => {
                 return (
                   <tr>
-                    <td scope="row">{product.produit}</td>
+                    <td scope="row">{product.produit.nom}</td>
 
                     <td
                       onClick={(id) => {
                         stockDetails(product.id);
                       }}
+                      style={{ cursor: "pointer" }}
                     >
                       <svg
                         xmlns="http://www.w3.org/2000/svg"

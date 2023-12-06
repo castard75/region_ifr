@@ -7,6 +7,7 @@ import Stock from "./Stock";
 import { ContextData } from "../App";
 
 function Home() {
+  ///----------------------------HOOK----------------------------------////
   // const [loading, setLoading] = useState(false);
   const [tabEmployee, setTabEmployee] = useState();
   const [loadEmployee, setLoadEmployee] = useState(false);
@@ -14,16 +15,15 @@ function Home() {
   const [tabStock, setTabStock] = useState();
   const [loadStock, setLoadStock] = useState(false);
 
+  ///---------------------------NAVIGATE------------------------------/////
+  const navigate = useNavigate();
   const load = useContext(ContextData);
 
-  //Context
+  //----------------------------Context------------------------------/////
   const { loading, setLoading } = useContext(ContextData);
 
-  useEffect(() => {
-    setLoaded(true);
-  }, []);
-
-  if (loaded) {
+  //Si le context est à true on lance la requête
+  if (loading) {
     const getEmployee = axios
       .get("https://localhost:8000/api/employees")
       .then((res) => {
@@ -52,13 +52,15 @@ function Home() {
 
         setTabStock(valeur);
         setLoadStock(true);
-        setLoaded(false);
+        setLoading(false);
       })
       .catch((err) => {
         console.log(err);
       });
   }
-  const navigate = useNavigate();
+
+  ////---------------------------------EMPLOYEE HISTORY------------------------------/////
+
   const submit = (e) => {
     let userId = e;
     console.log(userId);
@@ -72,14 +74,16 @@ function Home() {
       {loadEmployee ? (
         <>
           <div id="layoutSidenav">
-            {/* <div id="layoutSidenav_nav">
+            <div id="layoutSidenav_nav">
               <nav
                 class="sb-sidenav accordion sb-sidenav-dark"
                 id="sidenavAccordion"
               >
                 <div class="sb-sidenav-menu">
                   <div class="nav">
-                    <div class="sb-sidenav-menu-heading">Liste employées</div>
+                    <div class="sb-sidenav-menu-heading">
+                      Liste employées et produits
+                    </div>
 
                     <a
                       class="nav-link collapsed"
@@ -92,98 +96,22 @@ function Home() {
                       <div class="sb-nav-link-icon">
                         <i class="fas fa-book-open"></i>
                       </div>
-                      Pages
-                      <div class="sb-sidenav-collapse-arrow">
-                        <i class="fas fa-angle-down"></i>
-                      </div>
+                      Accueil
                     </a>
-                    <div
-                      class="collapse"
-                      id="collapsePages"
-                      aria-labelledby="headingTwo"
-                      data-bs-parent="#sidenavAccordion"
-                    >
-                      <nav
-                        class="sb-sidenav-menu-nested nav accordion"
-                        id="sidenavAccordionPages"
-                      >
-                        <a
-                          class="nav-link collapsed"
-                          href="#"
-                          data-bs-toggle="collapse"
-                          data-bs-target="#pagesCollapseAuth"
-                          aria-expanded="false"
-                          aria-controls="pagesCollapseAuth"
-                        >
-                          Authentication
-                          <div class="sb-sidenav-collapse-arrow">
-                            <i class="fas fa-angle-down"></i>
-                          </div>
-                        </a>
-                        <div
-                          class="collapse"
-                          id="pagesCollapseAuth"
-                          aria-labelledby="headingOne"
-                          data-bs-parent="#sidenavAccordionPages"
-                        >
-                          <nav class="sb-sidenav-menu-nested nav">
-                            <a class="nav-link" href="login.html">
-                              Login
-                            </a>
-                            <a class="nav-link" href="register.html">
-                              Register
-                            </a>
-                            <a class="nav-link" href="password.html">
-                              Forgot Password
-                            </a>
-                          </nav>
-                        </div>
-                        <a
-                          class="nav-link collapsed"
-                          href="#"
-                          data-bs-toggle="collapse"
-                          data-bs-target="#pagesCollapseError"
-                          aria-expanded="false"
-                          aria-controls="pagesCollapseError"
-                        >
-                          Error
-                          <div class="sb-sidenav-collapse-arrow">
-                            <i class="fas fa-angle-down"></i>
-                          </div>
-                        </a>
-                        <div
-                          class="collapse"
-                          id="pagesCollapseError"
-                          aria-labelledby="headingOne"
-                          data-bs-parent="#sidenavAccordionPages"
-                        >
-                          <nav class="sb-sidenav-menu-nested nav">
-                            <a class="nav-link" href="401.html">
-                              401 Page
-                            </a>
-                            <a class="nav-link" href="404.html">
-                              404 Page
-                            </a>
-                            <a class="nav-link" href="500.html">
-                              500 Page
-                            </a>
-                          </nav>
-                        </div>
-                      </nav>
-                    </div>
-                    <div class="sb-sidenav-menu-heading">Addons</div>
-                    <a class="nav-link" href="charts.html">
+
+                    {/* <div class="sb-sidenav-menu-heading">Addons</div> */}
+                    {/* <a class="nav-link" href="charts.html">
                       <div class="sb-nav-link-icon">
                         <i class="fas fa-chart-area"></i>
                       </div>
                       Charts
-                    </a>
-                    <a class="nav-link" href="tables.html">
+                    </a> */}
+                    {/* <a class="nav-link" href="tables.html">
                       <div class="sb-nav-link-icon">
                         <i class="fas fa-table"></i>
                       </div>
                       Tables
-                    </a>
+                    </a> */}
                   </div>
                 </div>
                 <div class="sb-sidenav-footer">
@@ -191,17 +119,18 @@ function Home() {
                   Start Bootstrap
                 </div>
               </nav>
-            </div> */}
+            </div>
+
             <div id="layoutSidenav_content">
               <main>
                 <div class="container-fluid px-4 d-flex justify-content-center">
                   <h2 class="mt-4">Liste des employées </h2>
                 </div>
-                <table class="table  table-hover">
+                <table class="table  table-hover datatablesSimple">
                   <thead>
                     <tr className="table-primary">
                       <th scope="col">Nom</th>
-                      <th scope="col">Telephone</th>
+                      <th scope="col">Téléphone</th>
                       <th scope="col">Adresse</th>
                       <th scope="col">Role</th>
                       <th scope="col">Détail</th>
@@ -219,6 +148,7 @@ function Home() {
                             onClick={(id) => {
                               submit(user.id);
                             }}
+                            style={{ cursor: "pointer" }}
                           >
                             <svg
                               xmlns="http://www.w3.org/2000/svg"

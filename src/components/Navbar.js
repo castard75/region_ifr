@@ -1,29 +1,39 @@
 import React from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { ContextData } from "../App.js";
+import { useContext } from "react";
 
 function Navbar() {
+  //Navigate
+  const navigate = useNavigate();
+
+  //Context
+  const { setLoading } = useContext(ContextData);
+
+  const handleDisconnect = (e) => {
+    e.preventDefault();
+    setLoading(false);
+    setTimeout(() => {
+      navigate("/");
+    }, 1000);
+  };
+
   return (
     <>
       <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
-        <a class="navbar-brand ps-3" href="index.html">
-          Accueil
-        </a>
-
+        <div>
+          <Link class="navbar-brand ps-3" to="/home">
+            Region-restauration
+          </Link>
+        </div>
         <form class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
           {/* <div class="input-group">
-            <input
-              class="form-control"
-              type="text"
-              placeholder="Search for..."
-              aria-label="Search for..."
-              aria-describedby="btnNavbarSearch"
-            />
-            <button class="btn btn-primary" id="btnNavbarSearch" type="button">
-              <i class="fas fa-search"></i>
-            </button>
-          </div> */}
+                    <input class="form-control" type="text" placeholder="Search for..." aria-label="Search for..." aria-describedby="btnNavbarSearch" />
+                    <button class="btn btn-primary" id="btnNavbarSearch" type="button"><i class="fas fa-search"></i></button>
+                </div> */}
         </form>
 
-        {/* <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
+        <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
           <li class="nav-item dropdown">
             <a
               class="nav-link dropdown-toggle"
@@ -40,26 +50,19 @@ function Navbar() {
               aria-labelledby="navbarDropdown"
             >
               <li>
-                <a class="dropdown-item" href="#!">
-                  Settings
-                </a>
-              </li>
-              <li>
-                <a class="dropdown-item" href="#!">
-                  Activity Log
-                </a>
-              </li>
-              <li>
-                <hr class="dropdown-divider" />
-              </li>
-              <li>
-                <a class="dropdown-item" href="#!">
-                  Logout
-                </a>
+                <span
+                  style={{ cursor: "pointer", backgroundColor: "#fff" }}
+                  class="dropdown-item"
+                  onClick={(e) => {
+                    handleDisconnect(e);
+                  }}
+                >
+                  Déconnection
+                </span>
               </li>
             </ul>
           </li>
-        </ul> */}
+        </ul>
       </nav>
     </>
   );

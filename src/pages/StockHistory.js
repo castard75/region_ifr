@@ -2,17 +2,25 @@ import React from "react";
 import Navbar from "../components/Navbar";
 import { Routes, Route, useParams } from "react-router-dom";
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import NavSide from "../components/NavSide";
+import { ContextData } from "../App";
 
 function StockHistory() {
   const [loadEmployee, setLoadEmployee] = useState(false);
   const [tabEmployee, setTabEmployee] = useState();
-  const [loading, setLoading] = useState(false);
+  const [loadings, setLoadings] = useState(false);
   const [name, setName] = useState("");
+  const [history, setHistory] = useState();
 
   let { id } = useParams();
+
+  //Navigate
+  const navigate = useNavigate();
+
+  //----------------------------Context------------------------------/////
+  const { loading, setLoading } = useContext(ContextData);
 
   useEffect(() => {
     const getEmployee = axios
@@ -21,19 +29,29 @@ function StockHistory() {
         let datas = res.data;
 
         let valeur;
-        setName(res.data.produit);
+        setName(res.data.produit.nom);
+        console.log(res.data.produit.nom);
         valeur = datas["stockHistoriques"];
 
         setTabEmployee(valeur);
+        setHistory(valeur);
         setLoadEmployee(true);
 
-        setLoading(false);
+        setLoadings(false);
       })
       .catch((err) => {
         console.log(err);
       });
   }, []);
 
+  useEffect(() => {
+    setLoading(true);
+  }, []);
+
+  const handleRetour = () => {
+    navigate("/home");
+    setLoading(true);
+  };
   return (
     <>
       <Navbar />
@@ -47,23 +65,33 @@ function StockHistory() {
                   <div class="container-fluid px-4">
                     <h1 class="mt-4">Historique produits</h1>
                     <ol class="breadcrumb mb-4">
-                      <li class="breadcrumb-item active"> {name}</li>
+                      <div>
+                        <li class="breadcrumb-item active">
+                          <span style={{ fontSize: "20px" }}>{name}</span>
+                        </li>
+                      </div>
                     </ol>
                   </div>
                   <table class="table container table-hover">
                     <thead>
                       <tr className="table-primary">
-                        <th scope="col-6">Etat</th>
-                        <th scope="col-6">Date</th>
+                        <th scope="col" style={{ textAlign: "left" }}>
+                          Etat
+                        </th>
+                        <th scope="col" style={{ textAlign: "center" }}>
+                          Date
+                        </th>
                       </tr>
                     </thead>
                     <tbody>
-                      {tabEmployee.map((user) => {
+                      {history.map((user) => {
                         return (
                           <tr>
                             {" "}
                             <td>{user.etat} </td>
-                            <td>{user.date.split("T")[0]}</td>
+                            <td style={{ textAlign: "center" }}>
+                              {user.date.split("T")[0]}
+                            </td>
                           </tr>
                         );
                       })}
